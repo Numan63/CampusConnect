@@ -12,11 +12,16 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: '3.11.0'
+      
       - name: Setup Flutter (Latest Stable)
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          
+      
       - name: Generate App Scaffolding
         run: |
           flutter create . --project-name=campus_connect
@@ -25,7 +30,7 @@ jobs:
       - name: Inject Permissions
         run: |
           sed -i 's|<application| <uses-permission android:name="android.permission.BLUETOOTH" /> \n <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> \n <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> \n <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> \n <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> \n <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> \n <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> \n <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> \n <uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> \n <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" /> \n <application|' android/app/src/main/AndroidManifest.xml
-
+      
       - name: Build APK
         run: flutter build apk --release --no-tree-shake-icons
         
